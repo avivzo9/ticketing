@@ -1,20 +1,18 @@
 import express, { Request, Response } from 'express';
-import { body, validationResult } from 'express-validator';
-import { ReqValidationError } from '../errors/reqValidationError';
-import { User } from '../models/user';
-import { BadReqError } from '../errors/badReqErr';
+import { body } from 'express-validator';
 import jwt from 'jsonwebtoken';
+import { BadReqError } from '../errors/badReqError';
+import { User } from '../models/user';
+import { validateReq } from '../middlewares/validateReq';
 
 const router = express.Router();
 
-router.post('/api/users/signup', [
+const bodyValidation = [
     body('email').isEmail().withMessage('Email must be valid'),
     body('password').trim().isLength({ min: 4, max: 20 }).withMessage('Password must be between 4 and 20 characters')
-], async (req: Request, res: Response) => {
-    const errors = validationResult(req);
+];
 
-    if (!errors.isEmpty()) throw new ReqValidationError(errors.array());
-
+router.post('/api/users/signup', bodyValidation, validateReq, async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     const existingUser = await User.findOne({ email });
@@ -25,10 +23,7 @@ router.post('/api/users/signup', [
 
     await user.save();
 
-    const userJwt = jwt.sign({
-        id: user.id,
-        email: user.email
-    }, 'asdf');
+    const userJwt = jwt.sign({ id: user.id, email: user.email }, process.env.JWT_KEY!);
 
     req.session = { jwt: userJwt };
 
