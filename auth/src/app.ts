@@ -10,8 +10,7 @@ import { signoutRouter } from './routes/signout';
 import { signupRouter } from './routes/signup';
 
 // middlewares
-import { errorHandler } from './middlewares/errorHandler';
-import { NotFoundError } from './errors/notFoundError';
+import { errorHandler, NotFoundError } from '@avzticketing/common';
 
 const app = express();
 app.set('trust proxy', true);
