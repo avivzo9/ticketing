@@ -18,7 +18,6 @@ AppCmp.getInitialProps = async appContext => {
         const { data } = await client.get('/api/users/currentuser');
         const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
 
-        console.log('data:', data)
         return { pageProps, ...data };
     } catch (err) {
         console.log('err:', err)
