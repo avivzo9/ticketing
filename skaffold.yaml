@@ -14,7 +14,7 @@ build:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "src/**/*.js"
+          - src: "src/**/*.ts"
             dest: .
     - image: avivzo9/client
       context: client
@@ -23,4 +23,12 @@ build:
       sync:
         manual:
           - src: "**/*.js"
+            dest: .
+    - image: avivzo9/tickets
+      context: tickets
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "src/**/*.ts"
             dest: .
