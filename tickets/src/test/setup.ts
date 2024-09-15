@@ -33,7 +33,7 @@ afterAll(async () => {
 global.signin = () => {
     // Build a JWT payload. { id, email }
     const payload = {
-        id: 'jnd8ahsd87awh',
+        id: global.generateId(),
         email: 'test@test.com'
     };
 

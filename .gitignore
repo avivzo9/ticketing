@@ -5,3 +5,6 @@ client/node_modules
 
 # client
 client/.next
+
+# tests
+nats-test
