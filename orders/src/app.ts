@@ -7,7 +7,7 @@ import cookieSession from 'cookie-session';
 import { createOrderRouter } from './routes/new';
 import { showOrderRouter } from './routes/show';
 import { indexOrderRouter } from './routes';
-import { deleteOrderRouter } from './routes/delete';
+import { cancelOrderRouter } from './routes/cancel';
 
 // middlewares
 import { currentUser, errorHandler, NotFoundError } from '@avzticketing/common';
@@ -24,7 +24,7 @@ app.use(currentUser);
 
 app.use(showOrderRouter);
 app.use(indexOrderRouter);
-app.use(deleteOrderRouter);
+app.use(cancelOrderRouter);
 app.use(createOrderRouter);
 
 app.all('*', async () => {
