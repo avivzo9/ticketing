@@ -1,7 +1,9 @@
 import mongoose from "mongoose";
-import { Order, OrderStatus } from "./order";
+import { Order } from "./order";
+import { OrderStatus } from "@avzticketing/common";
 
 interface TicketAttrs {
+    id: string;
     title: string;
     price: number;
 }
@@ -35,7 +37,11 @@ const ticketSchema = new mongoose.Schema({
     }
 });
 
-ticketSchema.statics.build = (attrs: TicketAttrs) => new Ticket(attrs);
+ticketSchema.statics.build = (attrs: TicketAttrs) => new Ticket({
+    _id: attrs.id,
+    title: attrs.title,
+    price: attrs.price
+});
 
 ticketSchema.methods.isReserved = async function () {
     return Boolean(await Order.findOne({ ticket: this, status: { $ne: OrderStatus.Cancelled } }));
