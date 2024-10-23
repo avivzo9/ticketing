@@ -1,4 +1,4 @@
-import { NotAutherizedError, NotFoundError, requireAuth, validateReq } from '@avzticketing/common';
+import { BadReqError, NotAutherizedError, NotFoundError, requireAuth, validateReq } from '@avzticketing/common';
 import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Ticket } from '../models/ticket';
@@ -16,6 +16,7 @@ router.put('/api/tickets/:id', requireAuth, bodyValidation, validateReq, async (
     const ticket = await Ticket.findById(req.params.id);
 
     if (!ticket) throw new NotFoundError();
+    if (ticket.orderId) throw new BadReqError('This ticket is reserved and cannot be edited');
     if (ticket.userId !== req.currentUser!.id) throw new NotAutherizedError();
 
     ticket.set({ title: req.body.title, price: req.body.price });
