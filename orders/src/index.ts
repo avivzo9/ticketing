@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { app } from "./app";
 import { natsWrapper } from "./natsWrapper";
 import { TicketCreatedListener } from "./events/listeners/ticketCreatedListener";
-import { TicketUpdatedListener } from "./events/listeners/ticketUpdated";
+import { TicketUpdatedListener } from "./events/listeners/ticketUpdatedListener";
 
 const init = async () => {
     if (!process.env.JWT_KEY) throw new Error('JWT_KEY must be defined');
