@@ -1,6 +1,6 @@
 import { Listener, Subjects, TicketCreatedEvent } from "@avzticketing/common";
 import { Message } from "node-nats-streaming";
-import { QueueGroupName } from "./queue-group-name";
+import { QueueGroupName } from "./queueGroupName";
 import { Ticket } from "../../models/ticket";
 
 export class TicketCreatedListener extends Listener<TicketCreatedEvent> {
