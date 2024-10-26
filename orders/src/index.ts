@@ -3,6 +3,7 @@ import { app } from "./app";
 import { natsWrapper } from "./natsWrapper";
 import { TicketCreatedListener } from "./events/listeners/ticketCreatedListener";
 import { TicketUpdatedListener } from "./events/listeners/ticketUpdatedListener";
+import { ExpirationCompleteListener } from "./events/listeners/expirationCompleteListener";
 
 const init = async () => {
     if (!process.env.JWT_KEY) throw new Error('JWT_KEY must be defined');
@@ -28,6 +29,7 @@ const init = async () => {
 
         new TicketCreatedListener(natsWrapper.client).listen();
         new TicketUpdatedListener(natsWrapper.client).listen();
+        new ExpirationCompleteListener(natsWrapper.client).listen();
 
         await mongoose.connect(process.env.MONGO_URI);
         console.log('Connections successful');

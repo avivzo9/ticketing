@@ -56,7 +56,6 @@ ticketSchema.statics.findByEvent = (event: { id: string, version: number }) => T
 
 ticketSchema.methods.isReserved = async function () {
     return Boolean(await Order.findOne({ ticket: this, status: { $ne: OrderStatus.Cancelled } }));
-    // $in: [OrderStatus.Created, OrderStatus.AwaitingPayment, OrderStatus.Complete]
 };
 
 export const Ticket = mongoose.model<TicketDoc, TicketModel>('Ticket', ticketSchema);
