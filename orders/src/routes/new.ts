@@ -9,7 +9,8 @@ import { natsWrapper } from "../natsWrapper";
 
 const router = express.Router();
 
-const EXPIRATION_WINDOW_SECONDS = 15 * 60;
+const EXPIRATION_WINDOW_SECONDS = 60;
+// const EXPIRATION_WINDOW_SECONDS = 15 * 60;
 
 const bodyValidation = [
     body('ticketId').not().isEmpty().custom((input: string) => mongoose.Types.ObjectId.isValid(input)).withMessage('TicketId is required')
