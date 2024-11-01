@@ -42,7 +42,7 @@ router.post('/api/payments', requireAuth, bodyValidation, validateReq, async (re
         stripeId: payment.stripeId
     });
 
-    res.status(201).send({ success: true });
+    res.status(201).send({ id: payment.id });
 });
 
 export { router as createChargeRouter };
