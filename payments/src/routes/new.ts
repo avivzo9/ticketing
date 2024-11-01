@@ -3,6 +3,9 @@ import express, { Request, Response } from 'express';
 import { body } from 'express-validator';
 import { Order } from '../model/Order';
 import { stripe } from '../stripe';
+import { Payment } from '../model/payment';
+import { PaymentCreatedPublisher } from '../events/payments/paymentCreatedPublisher';
+import { natsWrapper } from '../natsWrapper';
 
 const router = express.Router();
 
@@ -20,10 +23,23 @@ router.post('/api/payments', requireAuth, bodyValidation, validateReq, async (re
     else if (order.userId !== req.currentUser!.id) throw new NotAutherizedError();
     else if (order.status === 'cancelled') throw new BadReqError('Order is cancelled');
 
-    await stripe.charges.create({
+    const charge = await stripe.charges.create({
         currency: 'usd',
         amount: order.price * 100,
         source: token
+    });
+
+    const payment = Payment.build({
+        orderId,
+        stripeId: charge.id
+    });
+
+    await payment.save();
+
+    await new PaymentCreatedPublisher(natsWrapper.client).publish({
+        id: payment.id,
+        orderId: payment.orderId,
+        stripeId: payment.stripeId
     });
 
     res.status(201).send({ success: true });
