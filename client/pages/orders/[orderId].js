@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import StripeCheckout from 'react-stripe-checkout';
 import useRequest from '../../hooks/useRequest';
-import { Router } from 'next/router';
+import Router from 'next/router';
 
 const OrderShow = ({ order, currentUser }) => {
     const [timeLeft, setTimeLeft] = useState(0);
@@ -9,7 +9,7 @@ const OrderShow = ({ order, currentUser }) => {
         url: '/api/payments',
         method: 'post',
         body: { orderId: order.id },
-        onSuccess: () => Router.push('/')
+        onSuccess: () => Router.push('/orders')
     });
 
     useEffect(() => {
@@ -26,6 +26,9 @@ const OrderShow = ({ order, currentUser }) => {
             clearInterval(timerId);
         };
     }, [order]);
+
+    useEffect(() => {
+    }, [errors]);
 
     if (timeLeft < 0) return (
         <div>
