@@ -4,9 +4,10 @@ import Header from '../cmps/Header';
 
 // The page component receives the pageProps prop from the App component.
 const AppCmp = ({ Component, pageProps, currentUser }) => {
+
     return <div>
         <Header currentUser={currentUser} />
-        <Component {...pageProps} />
+        <Component currentUser={currentUser} {...pageProps} />
     </div>;
 };
 
@@ -16,7 +17,7 @@ AppCmp.getInitialProps = async appContext => {
 
     try {
         const { data } = await client.get('/api/users/currentuser');
-        const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx) : {};
+        const pageProps = Component.getInitialProps ? await Component.getInitialProps(ctx, client, data.currentUser) : {};
 
         return { pageProps, ...data };
     } catch (err) {
